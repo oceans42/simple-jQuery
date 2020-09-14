@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .red{
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li id="item1">选项1</li>
+    <li id="item2">选项2</li>
+    <li id="item3">选项3</li>
+    <li id="item4">选项4</li>
+    <li id="item5">选项5</li>
+  </ul>
+
+  <script>
+    window.jQuery = function(nodeOrSelector) {
+      let nodes = {}
+      if (typeof nodeOrSelector === 'string') {
+        let temp = document.querySelectorAll(nodeOrSelector) // 伪数组
+        for (let i = 0; i < temp.length; i++) {
+          nodes[i] = temp[i]
+        }
+        nodes.length = temp.length
+      } else if (nodeOrSelector instanceof Node) {
+        nodes = {
+          0: nodeOrSelector,
+          length: 1
+        }
+      }
+      nodes.addClass = function (classes) {
+        for(let key in classes){
+          var value = classes[key]
+          var methodName = value ? 'add' : 'remove'
+          for (let i = 0; i < nodes.length; i++) {
+            nodes[i].classList[methodName](key)
+          }
+        }
+      }
+
+      nodes.text = function(text) {
+        if (text === undefined) {
+          var texts = []
+          for (let i = 0; i < nodes.length; i++) {
+            texts.push(nodes[i].textContent)
+          }
+          return texts
+        } else {
+          for (let i = 0; i < nodes.length; i++) {
+            nodes[i].textContent = text
+          }
+        }
+      }
+      return nodes
+    }
+    window.$ = jQuery
+    var node2 = $('#item3')
+    // var node2 = $('ul > li')
+    node2.addClass({'red': true, 'b': false, 'c':true})
+    var text = node2.text()
+    console.log(text)
+  </script>
+</body>
+</html>
